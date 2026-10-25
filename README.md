@@ -164,3 +164,5 @@ When running the cockpit in your browser, you can interact with:
 - **FERPA & GDPR Adherence**: No biometric templates or personally identifying facial features are stored permanently.
 - **Edge Volatile RAM Only**: Video frames are analyzed in-flight and immediately discarded. No video recordings are persisted to disk.
 - **100% Offline Capability**: Runs entirely on the local device without outbound network requests or cloud telemetry dependencies.
+#   A t t e n d a n c e _ t r a c e r -  
+ 
