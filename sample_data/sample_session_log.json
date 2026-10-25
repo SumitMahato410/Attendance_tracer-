@@ -1,0 +1,40 @@
+{
+  "system": "Multimodal Attendance & Engagement Agent",
+  "version": "1.0.0",
+  "edgeDeployment": {
+    "offlineGuaranteed": true,
+    "rawVideoRetention": false,
+    "anonymizedHashing": true
+  },
+  "sessionMetrics": {
+    "durationSeconds": 240,
+    "averageClassroomEngagement": 82.4,
+    "peakEngagement": 94.2,
+    "troughEngagement": 58.1,
+    "teacherTalkRatio": 0.448
+  },
+  "attendanceSummary": {
+    "totalEnrolled": 5,
+    "sustainedPresent": 4,
+    "lateArrivals": 1,
+    "transitoryFiltered": 1
+  },
+  "pedagogicalInterventions": [
+    {
+      "time": "02:15",
+      "type": "PACING_OPTIMIZATION",
+      "badge": "Monologue Fatigue",
+      "trigger": "Extended monologue > 3.5 min, attention dip to 58%",
+      "suggestedAction": "60-second Think-Pair-Share",
+      "status": "applied"
+    },
+    {
+      "time": "03:10",
+      "type": "POSITIVE_MOMENTUM",
+      "badge": "High Engagement",
+      "trigger": "Acoustic dialogue peak + multiple hand-raises",
+      "suggestedAction": "Transfer floor to student-led discussion",
+      "status": "applied"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+StudentID,StudentName,Status,SustainedPresenceSeconds,PresenceRatioPct,FirstDetected,LastDetected,AverageEngagement
+"STU-101","Aarav Sharma","PRESENT [Sustained]",240,96%,"10:00:02","10:04:02",88%
+"STU-102","Maya Chen","PRESENT [Sustained]",240,98%,"10:00:02","10:04:02",94%
+"STU-103","Liam Davis","PRESENT [Sustained]",215,86%,"10:00:05","10:04:00",58%
+"STU-104","Sophia Patel","PRESENT [Sustained]",240,97%,"10:00:02","10:04:02",91%
+"STU-105","Noah Wilson","PRESENT [Late Arrival]",190,82%,"10:01:15","10:04:02",74%
+"VIS-999","Hallway Visitor","FILTERED (Transitory Passerby)",8,14%,"10:00:45","10:00:53",30%

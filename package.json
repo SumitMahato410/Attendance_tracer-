@@ -1,0 +1,22 @@
+{
+  "name": "multimodal-classroom-agent",
+  "version": "1.0.0",
+  "description": "AI-Powered Privacy-Preserving Multimodal Attendance & Engagement Agent for Classroom Intelligence",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/run_all_tests.js"
+  },
+  "keywords": [
+    "multimodal-ai",
+    "computer-vision",
+    "audio-signal-processing",
+    "classroom-intelligence",
+    "sustained-presence",
+    "privacy-preserving",
+    "teaching-suggestions",
+    "offline-edge"
+  ],
+  "author": "Antigravity AI",
+  "license": "Apache-2.0"
+}

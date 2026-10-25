@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multimodal Attendance & Engagement Agent | Privacy-Preserving Classroom Intelligence</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation & System Status Bar -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="brand-icon">🎓</div>
+      <div class="brand-text">
+        <h1>Multimodal Attendance & Engagement Agent</h1>
+        <p>AI-Powered, Privacy-Preserving Classroom Intelligence System</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="offline-badge" title="Operates 100% on-device. No cloud telemetry, no raw video retention.">
+        100% Offline Edge Guaranteed
+      </div>
+
+      <div class="session-timer">
+        Session: <span id="sessionClockVal">00:00</span>
+      </div>
+
+      <select id="sourceSelect" class="select-control" title="Choose input feed">
+        <option value="simulation" selected>📹 Synthetic Classroom Feed</option>
+        <option value="live">🔴 Live Webcam & Microphone</option>
+      </select>
+
+      <label class="toggle-label" title="Applies real-time Gaussian pixelation & SHA-256 ID pseudonymization">
+        <input type="checkbox" id="privacyToggle" checked>
+        <span>Privacy Face Blur</span>
+      </label>
+
+      <label class="toggle-label" title="Display 3D Gaze Vectors and Pose Arrows">
+        <input type="checkbox" id="gazeToggle" checked>
+        <span>Gaze Vectors</span>
+      </label>
+
+      <button id="exportCsvBtn" class="btn btn-secondary btn-sm" title="Download sustained attendance CSV log">
+        📥 Export CSV
+      </button>
+
+      <button id="exportJsonBtn" class="btn btn-secondary btn-sm" title="Download comprehensive session analytics JSON">
+        📊 Export JSON
+      </button>
+
+      <button id="resetBtn" class="btn btn-ghost btn-sm" title="Reset current session clock and metrics">
+        ↺ Reset
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Container -->
+  <main class="dashboard-container">
+
+    <!-- KPI Summary Row -->
+    <section class="metrics-banner">
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>Classroom Attention Index</span>
+          <span style="color: var(--accent-cyan);">● MES</span>
+        </div>
+        <div class="kpi-value-row">
+          <div class="kpi-value" id="avgEngagementGauge">78%</div>
+          <div class="kpi-subtext">Multimodal weighted fusion</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>Classroom Dynamics State</span>
+          <span style="color: var(--accent-purple);">● Agent</span>
+        </div>
+        <div class="kpi-value-row">
+          <div class="dynamic-badge" id="classroomDynamicBadge">Optimal Flow</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>Dialogue & Speech Balance</span>
+          <span style="color: var(--accent-indigo);">● VAD</span>
+        </div>
+        <div class="kpi-value-row">
+          <div class="kpi-value" id="speechRatioVal">45%</div>
+          <div class="kpi-subtext" id="dialogueTypeVal">Interactive Lecture</div>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span>Scenario 1: Sustained Presence</span>
+          <span style="color: var(--accent-green);">● Roster</span>
+        </div>
+        <div class="kpi-value-row">
+          <div class="kpi-value" style="color: var(--accent-green);"><span id="sustainedCountVal">4</span> <span style="font-size: 1rem; color: var(--text-muted); font-weight: normal;">/ 5</span></div>
+          <div class="kpi-subtext">
+            Late: <span id="lateCountVal" style="color: var(--accent-amber); font-weight: 600;">0</span> | Filtered: <span id="transitoryCountVal" style="color: var(--accent-pink); font-weight: 600;">0</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Observation & Real-Time Intelligence Grid -->
+    <div class="main-grid">
+
+      <!-- Left Column: Video Stage, Vision Overlays, Acoustic Visualizer -->
+      <section class="video-stage-card">
+        <div class="stage-toolbar">
+          <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">
+            Classroom Perception Feed (Vision & Gaze Tracking)
+          </span>
+
+          <!-- Scenario Simulation Switcher -->
+          <div class="scenario-pill-group">
+            <button class="scenario-pill active" data-scenario="balanced" title="Standard balanced classroom dynamics">
+              1. Balanced Flow
+            </button>
+            <button class="scenario-pill" data-scenario="fatigue" title="Simulates continuous monologue and student attention drift">
+              2. Lecture Fatigue Drop
+            </button>
+            <button class="scenario-pill" data-scenario="qa_spike" title="Simulates questions, student hand-raises and active dialogue">
+              3. Q&A Surge Peak
+            </button>
+            <button class="scenario-pill" data-scenario="transitory_test" title="Simulates a brief 8-second hallway passerby to verify false-positive rejection">
+              4. False-Positive Test
+            </button>
+            <button class="scenario-pill" data-scenario="late_arrival" title="Simulates student Noah arriving late">
+              5. Late Arrival
+            </button>
+          </div>
+
+          <select id="scenarioSelect" class="select-control" style="display: none;">
+            <option value="balanced">Balanced Flow</option>
+            <option value="fatigue">Lecture Fatigue Drop</option>
+            <option value="qa_spike">Q&A Surge Peak</option>
+            <option value="transitory_test">False-Positive Test</option>
+            <option value="late_arrival">Late Arrival</option>
+          </select>
+        </div>
+
+        <!-- Video Canvas with Overlays -->
+        <div class="canvas-wrapper">
+          <canvas id="videoCanvas" width="800" height="450"></canvas>
+        </div>
+
+        <!-- Telemetry Below Video -->
+        <div class="stage-footer-telemetry">
+          <!-- Audio Signal FFT Spectrum -->
+          <div class="audio-box">
+            <div class="audio-box-header">
+              <span>Acoustic Spectrum & Voice Activity (VAD)</span>
+              <span style="color: var(--accent-cyan); font-family: monospace;">20Hz - 8kHz</span>
+            </div>
+            <canvas id="audioCanvas" width="360" height="44"></canvas>
+          </div>
+
+          <!-- Multimodal Breakdown Cards -->
+          <div class="multimodal-signals-box">
+            <div class="signal-pill">
+              <span class="signal-pill-label">Gaze Alignment</span>
+              <span class="signal-pill-val" id="gazeScoreVal" style="color: var(--accent-cyan);">82%</span>
+            </div>
+            <div class="signal-pill">
+              <span class="signal-pill-label">Posture / Motion</span>
+              <span class="signal-pill-val" id="postureScoreVal" style="color: var(--accent-green);">86%</span>
+            </div>
+            <div class="signal-pill">
+              <span class="signal-pill-label">Sustained Threshold</span>
+              <span class="signal-pill-val" style="color: var(--accent-amber);">≥ 65% / 45s</span>
+            </div>
+            <div class="signal-pill">
+              <span class="signal-pill-label">Privacy Shield</span>
+              <span class="signal-pill-val" style="color: var(--accent-pink);">Active</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: AI Pedagogical Agent & Seating Spatial Heatmap -->
+      <aside class="side-panel">
+
+        <!-- Scenario 3: AI-Driven Teaching Suggestions Agent -->
+        <div class="card" style="flex: 1;">
+          <div class="card-header">
+            <div class="card-title">
+              <span>AI Pedagogical Assistant</span>
+              <span class="badge-ai">Agentic Reasoner</span>
+            </div>
+            <span style="font-size: 0.72rem; color: var(--text-muted);">Real-Time Prompts</span>
+          </div>
+
+          <div class="suggestions-stream" id="suggestionsContainer">
+            <!-- Dynamic suggestion cards injected by AgentReasoner -->
+            <div class="empty-state">
+              <div class="empty-icon">✓</div>
+              <div>Analyzing classroom dynamics... Observations will populate as session progresses.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Classroom Seating Spatial Heatmap -->
+        <div class="card">
+          <div class="card-header" style="margin-bottom: 8px;">
+            <div class="card-title" style="font-size: 0.85rem;">
+              <span>Classroom Seating Engagement Heatmap</span>
+            </div>
+            <span style="font-size: 0.7rem; color: var(--text-muted);">Quadrants</span>
+          </div>
+          <canvas id="heatmapCanvas" width="360" height="130"></canvas>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- Lower Section: Detailed Scenario 1 & 2 Panels -->
+    <section class="lower-section">
+
+      <!-- Scenario 1: Automated Attendance Tracking (Sustained Presence Engine) -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span>Scenario 1: Automated Attendance Log (Sustained Presence Authentication)</span>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">
+              Attendance is authenticated based on <strong>sustained presence over a rolling window</strong> (≥ 65% across 45s), suppressing false positives from transitory visitors or passersby.
+            </p>
+          </div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">
+            Click any row for cryptographic audit trail
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>Participant Identity</th>
+                <th>Presence Status</th>
+                <th>Sustained Duration</th>
+                <th>Window Presence Ratio</th>
+                <th>Average Attention (MES)</th>
+              </tr>
+            </thead>
+            <tbody id="rosterTbody">
+              <!-- Populated dynamically by FusionEngine -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Scenario 2: Continuous Engagement & Session Dynamics Timeline -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <span>Scenario 2: Session Dynamics & Continuous Timeline Analysis</span>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">
+              Multi-layer timeline plotting <strong>Classroom Attention Index</strong> (solid cyan) vs. <strong>Audio Speech Activity</strong> (dashed purple), flagging attention drops and interaction peaks.
+            </p>
+          </div>
+          <div style="display: flex; gap: 14px; font-size: 0.72rem;">
+            <span style="color: var(--accent-cyan); font-weight: 600;">● Attention Index (MES)</span>
+            <span style="color: var(--accent-purple); font-weight: 600;">-- Audio Activity (VAD)</span>
+            <span style="color: var(--accent-green); font-weight: 600;">■ Optimal Zone (≥70%)</span>
+          </div>
+        </div>
+
+        <canvas id="chartCanvas" width="1400" height="190"></canvas>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Student Drilldown Modal -->
+  <div id="studentModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <button id="closeModalBtn" class="modal-close">&times;</button>
+      <div id="modalStudentDetails">
+        <!-- Injected dynamically on row click -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/vision-engine.js"></script>
+  <script src="js/audio-engine.js"></script>
+  <script src="js/fusion-engine.js"></script>
+  <script src="js/agent-reasoner.js"></script>
+  <script src="js/analytics-engine.js"></script>
+  <script src="js/simulation-feed.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
